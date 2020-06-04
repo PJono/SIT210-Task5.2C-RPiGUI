@@ -1,0 +1,56 @@
+#help from https://stackoverflow.com/questions/24588406/creating-a-traffic-light-using-python
+from tkinter import *
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+
+blue = 9
+red = 10
+green = 11
+
+GPIO.setup(red,GPIO.OUT)
+GPIO.setup(blue,GPIO.OUT)
+GPIO.setup(green,GPIO.OUT)
+GPIO.output(red,False)
+GPIO.output(blue,False)
+GPIO.output(green,False)
+
+class radiobutton_lights:
+
+    def __init__(self):
+
+        window = Tk()
+        window.title("Change lights")
+
+        frame = Frame(window)
+        frame.pack()
+
+        self.colour = StringVar()
+
+        radio_red = Radiobutton(frame, text="Red", variable=self.colour, value="R", command=self.colours)
+        radio_red.grid(row=10, column=1)
+
+        radio_blue = Radiobutton(frame, text="Blue", variable=self.colour, value="B", command=self.colours)               
+        radio_blue.grid(row = 10, column = 2)
+
+        radio_green = Radiobutton(frame, text="Green", variable=self.colour, value="G", command=self.colours)
+        radio_green.grid(row = 10, column = 3)
+        window.mainloop()
+
+    def colours(self):
+        colour = self.colour.get()
+
+        if colour == "R":
+            GPIO.output(green,False)
+            GPIO.output(blue,False)
+            GPIO.output(red,True)
+        if colour == "B":
+            GPIO.output(green,False)
+            GPIO.output(blue,True)
+            GPIO.output(red,False)
+        if colour == "G":
+            GPIO.output(green,True)
+            GPIO.output(blue,False)
+            GPIO.output(red,False)
+
+
+radiobutton_lights()
